@@ -1,0 +1,81 @@
+---
+title: "Pruning Effects on Apple Tree Harvest"
+author: Zack Nichols
+date: "`r Sys.Date()`"
+output: 
+ github_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# ABSTRACT
+
+# BACKGROUND
+
+
+```{r viremia, include=TRUE, eval=TRUE, warning=FALSE, fig.align='left', fig.width=4.75, fig.height=7}
+
+```
+
+# STUDY QUESTION and HYPOTHESIS
+
+## Questions  
+How does annual pruning influence the likelihood of achieving higher categorical harvest ratings among apple trees in Northern Utah orchards?
+
+## Hypothesis 
+If pruning enhances canopy light penetration and resource allocation within apple trees, then pruned trees will produce a significantly higher fruit average harvest rating compared to unpruned individuals.
+
+## Prediction
+If our hypothesis is correct, we expect to see that pruned trees have a higher proportion of *Above Average* harvest yield classifications, and a lower proportion of *Minimal* yields relative to unpruned trees, indicating a positive association between pruning and categorical harvest outcomes.
+
+# METHODS
+
+
+## Fill in 1st analysis e.g. barplots
+
+
+```{r first-analysis, warning=FALSE}
+install.packages("ggplot2") 
+library("ggplot2")
+
+pruning_data <- read.csv("pruning_data.csv")
+
+ggplot(pruning_data, aes(x=pruningstatus, y=sizeofharvest)) + 
+  geom_point(size=3, fill="gray50", alpha=.2) + # data point parameters
+  geom_boxplot(fill= "lightgreen", alpha=0.6) + # box parameters
+  xlab("Pruning Status of Tree") + # X-axis label
+  ylab("Harvest Yield Grade") + # Y-axis label
+  theme_classic() + # removes the grid lines in the background 
+  theme(axis.text.x = element_text(size=15)) + # changes x axis text size
+  theme(axis.title.x = element_text(size=20)) + # changes x axis title size
+  theme(axis.title.x = element_text(face="bold")) + # changes x axis title to bold
+  theme(axis.title.x = element_text(margin = margin(t = 10))) + # x/y axis distance 
+  theme(axis.text.y = element_text(size=15)) + # changes y axis text size
+  theme(axis.title.y = element_text(size=20)) + # changes y axis title size
+  theme(axis.title.y = element_text(face="bold")) + # changes y axis title to bold
+  theme(axis.title.y = element_text(margin = margin(r = 10))) # label distance
+
+```
+## Fill in 2nd analysis/plot e.g. generalized linear model
+
+```{r}
+
+
+```
+
+# DISCUSSION
+
+## Interpretation of 1st analysis (e.g. barplots)
+
+## Interpretation of 2nd analysis (e.g. generalized linear model)
+
+# CONCLUSION
+
+# REFERENCES     
+
+1. Komar N, Langevin S, Hinten S, Nemeth N, Edwards E, Hettler D, Davis B, Bowen R, Bunning M. Experimental infection of North American birds with the New York 1999 strain of West Nile virus. Emerg Infect Dis. 2003 Mar;9(3):311-22. https://doi.org/10.3201/eid0903.020628
+
+2. ChatGPT. OpenAI, version Jan 2025. Used as a reference for functions such as plot() and to correct syntax errors. Accessed `r Sys.Date()`.
