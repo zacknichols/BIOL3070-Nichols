@@ -9,11 +9,29 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+# Libraries
+library(ggplot2)
+library(RColorBrewer)
+library(plyr)
+
+# Data Set
+pruning_data <- read.csv(file="pruning_data.csv")
+
+
 ```
 
 # ABSTRACT
 
 # BACKGROUND
+
+Successful apple production depends on a variety of factors, from environmental conditions to orchard management practices. One of these management practices, pruning, is recognized as one of the most essential techniques for maintaining tree productivity. Similar to tree species that do *not* produce fruit, apple trees naturally invest energy into vegetative growth, often producing dense canopies that limit internal light ability. This reduced light penetration can inhibit flower bud formation, restrict fruit development, and ultimately lower the overall harvest quality from the tree (Gomasta et al., 2024). Pruning is used to open the canopy, improve sunlight distribution across all leaves, and encourage the production of fruiting wood, making the practice a crucial component of orchard management
+
+Beyond simply improving light exposure, pruning also influences other factors supplemental to fruit growth. These include air flow, disease pressure, plant stability, and growth distribution. Strategically removing crowded or shaded branches helps a tree to maintain vigor, while supporting consistent fruit production across seasons, and also increase the quality and development of the individual fruits. As a result, pruned trees are expected to achieve more reliable yields than unpruned plants, especially in the case of environments where environmental variability can compound stress on fruit development (Renquist, 2018).
+
+In many commercial and research-oriented orchards, harvest success is recorded using categorical classifications when direct, quantitative counts of fruit number or biomass are unavailable. These categories provide a practical means of assessing overall harvest trends across large populations of trees, without comparing them to one another. Understanding whether pruning increases the likelihood of a higher harvest classification is important for optimizing orchard efficiency, participatory in regions like Northern Utah where unpredictable fluctuations in temperature, precipitations, and pollinator activity can affect fruit yield.
+
+This study examines whether pruned apple trees are more likely to receive higher categorical harvest ratings compared to unpruned trees, providing insight into the role of pruning practices in determining yield outcomes.
 
 
 ```{r viremia, include=TRUE, eval=TRUE, warning=FALSE, fig.align='left', fig.width=4.75, fig.height=7}
@@ -34,48 +52,66 @@ If our hypothesis is correct, we expect to see that pruned trees have a higher p
 # METHODS
 
 
-## Fill in 1st analysis e.g. barplots
+## 1st analysis
 
 
 ```{r first-analysis, warning=FALSE}
-install.packages("ggplot2") 
-library("ggplot2")
+# one factor T test
+# or ANOVA
 
-pruning_data <- read.csv("pruning_data.csv")
+```
+## 2nd analysis
 
+```{r, second-analysis, warning=T}
+## Create a linear model determine whether pruning impacts apple harvest
+apple_lm <- lm(harvest ~ pruned, data = apples)
+resids <- apple_lm$residuals
+qqnorm(resids)
+
+
+```
+
+## 3rd analysis
+
+```{r, third-analysis, warning=T}
 ggplot(pruning_data, aes(x=pruningstatus, y=sizeofharvest)) + 
-  geom_point(size=3, fill="gray50", alpha=.2) + # data point parameters
-  geom_boxplot(fill= "lightgreen", alpha=0.6) + # box parameters
+  # point parameters
+  geom_point(size=3, fill="gray50", alpha=.2) + # box point parameters
+  geom_jitter(color="grey50", size=0.5, alpha=0.2) + # individual data points
+  # box parameters
+  geom_boxplot(aes(fill= pruningstatus), alpha=0.5, width = 0.6) + # box parameters 
+  scale_fill_manual(values = c("Unpruned" = "forestgreen",
+                               "Pruned" = "steelblue")) + 
+  scale_color_manual(values = c("Unpruned" = "forestgreen",
+                               "Pruned" = "steelblue")) + 
+                      # makes unpruned/pruned different colors
+  # Axis Labels + title
   xlab("Pruning Status of Tree") + # X-axis label
   ylab("Harvest Yield Grade") + # Y-axis label
+  ggtitle("Harvest Yield Grade Across Pruning Practice") + 
   theme_classic() + # removes the grid lines in the background 
-  theme(axis.text.x = element_text(size=15)) + # changes x axis text size
-  theme(axis.title.x = element_text(size=20)) + # changes x axis title size
-  theme(axis.title.x = element_text(face="bold")) + # changes x axis title to bold
-  theme(axis.title.x = element_text(margin = margin(t = 10))) + # x/y axis distance 
-  theme(axis.text.y = element_text(size=15)) + # changes y axis text size
-  theme(axis.title.y = element_text(size=20)) + # changes y axis title size
-  theme(axis.title.y = element_text(face="bold")) + # changes y axis title to bold
-  theme(axis.title.y = element_text(margin = margin(r = 10))) # label distance
+  theme(
+    plot.title = element_text(hjust=0.5, size=22, face="bold"), # changes title format
+    axis.text.x = element_text(size=15), # changes x axis text size
+    axis.title.x = element_text(size=20, face="bold", margin = margin(t=10)), 
+    axis.text.y = element_text(size=15), # changes y axis text size
+    axis.title.y = element_text(size=20, face="bold", margin = margin(r = 10)), # changes y axis title size
+    legend.position = "none"
+  )
 
 ```
-## Fill in 2nd analysis/plot e.g. generalized linear model
-
-```{r}
-
-
-```
-
 # DISCUSSION
 
-## Interpretation of 1st analysis (e.g. barplots)
+## Interpretation of 1st analysis
 
-## Interpretation of 2nd analysis (e.g. generalized linear model)
+## Interpretation of 2nd analysis 
 
 # CONCLUSION
 
 # REFERENCES     
 
-1. Komar N, Langevin S, Hinten S, Nemeth N, Edwards E, Hettler D, Davis B, Bowen R, Bunning M. Experimental infection of North American birds with the New York 1999 strain of West Nile virus. Emerg Infect Dis. 2003 Mar;9(3):311-22. https://doi.org/10.3201/eid0903.020628
+1. Gomasta, J., Sarker, B., Haque, M., Anwari, A., Mondal, S., & Uddin, S. (2024). Pruning techniques affect flowering, fruiting, yield and fruit biochemical traits in guava under transitory sub-tropical conditions. Heliyon, e30064–e30064. https://doi.org/10.1016/j.heliyon.2024.e30064
 
-2. ChatGPT. OpenAI, version Jan 2025. Used as a reference for functions such as plot() and to correct syntax errors. Accessed `r Sys.Date()`.
+2. Renquist, S. (2018, July 3). Fruit thinning. OSU Extension Service. https://extension.oregonstate.edu/catalog/em-9598-fruit-thinning
+
+3. ChatGPT. OpenAI, version Jan 2025. Used as a reference for functions such as plot() and to correct syntax errors. Accessed `r Sys.Date()`.
